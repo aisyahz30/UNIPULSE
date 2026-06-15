@@ -236,14 +236,6 @@
   .tl-block-name { font-weight: 500; }
   .tl-block-sub { font-size: 10px; opacity: 0.75; margin-top: 1px; }
 
-  .tl-now { display: flex; align-items: center; gap: 10px; margin: 2px 0; }
-  .tl-now-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--red-400); flex-shrink: 0; margin-left: 28px;
-  }
-  .tl-now-line { flex: 1; height: 0.5px; background: var(--red-400); }
-  .tl-now-label { font-size: 10px; color: var(--red-600); white-space: nowrap; }
-
   /* ── right column ── */
   .right-col { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
   .rc-title {
@@ -263,11 +255,6 @@
   }
   .mood-chip:hover { background: var(--purple-50); border-color: var(--purple-200); color: var(--purple-600); }
   .mood-chip.sel { background: var(--purple-50); border-color: var(--purple-200); color: var(--purple-600); }
-  .mood-insight {
-    font-size: 11px; color: var(--text-2);
-    background: var(--bg-2); border-radius: var(--r-md);
-    padding: 7px 10px; line-height: 1.5;
-  }
 
   /* tasks */
   .task-row {
@@ -276,16 +263,7 @@
     border-bottom: 0.5px solid var(--border);
   }
   .task-row:last-of-type { border-bottom: none; }
-  .tchk {
-    width: 14px; height: 14px; border-radius: 4px;
-    border: 1px solid var(--border-2); flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-  }
-  .tchk.done { background: var(--teal-400); border-color: var(--teal-400); }
-  .tchk.done i { font-size: 9px; color: #fff; }
   .tname { font-size: 12px; flex: 1; color: var(--text-1); }
-  .tname.done { text-decoration: line-through; color: var(--text-3); }
   .ttag { font-size: 10px; padding: 2px 7px; border-radius: 10px; }
   .ttag.red { background: var(--red-50); color: var(--red-600); }
   .ttag.amber { background: var(--amber-50); color: var(--amber-800); }
@@ -300,30 +278,6 @@
   }
   .well-fill { height: 100%; border-radius: 2px; }
   .well-val { font-size: 11px; color: var(--text-2); width: 28px; text-align: right; }
-
-  /* ai picks */
-  .ai-row {
-    display: flex; gap: 8px; padding: 5px 0;
-    border-bottom: 0.5px solid var(--border);
-  }
-  .ai-row:last-of-type { border-bottom: none; }
-  .ai-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
-  .ai-text { font-size: 11px; color: var(--text-1); line-height: 1.5; }
-  .ai-chip {
-    display: inline-block; font-size: 10px;
-    background: var(--purple-50); color: var(--purple-600);
-    padding: 1px 7px; border-radius: 10px; margin-top: 3px;
-  }
-
-  .gen-btn {
-    width: 100%; font-size: 12px; padding: 7px;
-    border-radius: var(--r-md);
-    border: 0.5px dashed var(--border-2);
-    background: transparent; color: var(--purple-400);
-    cursor: pointer; margin-top: 4px;
-    transition: background 0.12s;
-  }
-  .gen-btn:hover { background: var(--purple-50); }
 </style>
 </head>
 <body>
@@ -343,120 +297,129 @@
 <div class="body-grid">
 
   <nav class="sidenav">
-  <div class="nav-profile">
-    <div class="av">AK</div>
-    <div class="nav-name">Loading...</div>
-    <div class="nav-sub">---</div>
-  </div>
+    <div class="nav-profile">
+      <div class="av">AK</div>
+      <div class="nav-name">Loading...</div>
+      <div class="nav-sub">---</div>
+    </div>
 
-  <span class="nav-sec-label">OVERVIEW</span>
-  <div class="nav-item active" data-target="page-dashboard"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
-  <div class="nav-item" data-target="page-dashboard"><i class="ti ti-calendar"></i> Schedule</div>
-  <div class="nav-item" data-target="page-tasks"><i class="ti ti-checklist"></i> Tasks <span class="nav-badge red">0</span></div>
+    <span class="nav-sec-label">OVERVIEW</span>
+    <div class="nav-item active" data-target="page-dashboard"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+    <div class="nav-item" data-target="page-schedule"><i class="ti ti-calendar"></i> Schedule</div>
+    <div class="nav-item" data-target="page-tasks"><i class="ti ti-checklist"></i> Tasks <span class="nav-badge red">0</span></div>
 
-  <span class="nav-sec-label">WELLBEING</span>
-  <div class="nav-item" data-target="page-mood"><i class="ti ti-mood-smile"></i> Mood</div>
-  <div class="nav-item" data-target="page-mood"><i class="ti ti-salad"></i> Diet</div>
-  <div class="nav-item" data-target="page-mood"><i class="ti ti-zzz"></i> Sleep <span class="nav-badge green">6.5h</span></div>
-</nav>
+    <span class="nav-sec-label">WELLBEING</span>
+    <div class="nav-item" data-target="page-mood"><i class="ti ti-mood-smile"></i> Mood</div>
+  </nav>
 
   <main class="main">
-  <div class="stat-strip">
-    <div class="stat">
-      <div class="stat-lbl">Free time today</div>
-      <div class="stat-num" id="stat-free-time">0h</div>
-      <div class="stat-note green">Calculating...</div>
-    </div>
-    <div class="stat">
-      <div class="stat-lbl">Tasks due</div>
-      <div class="stat-num" id="stat-tasks-due">0</div>
-      <div class="stat-note red">Active</div>
-    </div>
-    <div class="stat">
-      <div class="stat-lbl">Next deadline</div>
-      <div class="stat-num" style="font-size:14px;padding-top:3px;" id="stat-next-deadline">None</div>
-      <div class="stat-note red">-</div>
-    </div>
-    <div class="stat">
-      <div class="stat-lbl">Wellness score</div>
-      <div class="stat-num" id="stat-wellness-score">--%</div>
-      <div class="stat-note">Syncing...</div>
-    </div>
-  </div>
-
-  <div id="page-dashboard" class="page-view">
-    <div class="main-body">
-      <div class="timeline-area">
-        <div class="tl-header">
-          <span class="tl-title">Today's timeline</span>
-          <div class="tl-days">
-            <button class="tl-day">Mon</button>
-            <button class="tl-day">Tue</button>
-            <button class="tl-day active">Wed</button>
-            <button class="tl-day">Thu</button>
-            <button class="tl-day">Fri</button>
-          </div>
-        </div>
-        <div class="timeline" id="timeline-container"></div>
+    <div class="stat-strip">
+      <div class="stat">
+        <div class="stat-lbl">Free time today</div>
+        <div class="stat-num" id="stat-free-time">0h</div>
+        <div class="stat-note green">Calculating...</div>
       </div>
+      <div class="stat">
+        <div class="stat-lbl">Tasks due</div>
+        <div class="stat-num" id="stat-tasks-due">0</div>
+        <div class="stat-note red">Active</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">Next deadline</div>
+        <div class="stat-num" style="font-size:14px;padding-top:3px;" id="stat-next-deadline">None</div>
+        <div class="stat-note red">-</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl">Wellness score</div>
+        <div class="stat-num" id="stat-wellness-score">--%</div>
+        <div class="stat-note">Syncing...</div>
+      </div>
+    </div>
 
-      <div class="right-col">
-        
-        <div>
-          <div class="rc-title">Mood check-in <span>today</span></div>
-          <div class="mood-chips">
+    <div id="page-dashboard" class="page-view">
+      <div class="main-body">
+        <div class="timeline-area">
+          <div class="tl-header">
+            <span class="tl-title">Today's timeline</span>
+            <div class="tl-days">
+              <button class="tl-day">Mon</button>
+              <button class="tl-day">Tue</button>
+              <button class="tl-day active">Wed</button>
+              <button class="tl-day">Thu</button>
+              <button class="tl-day">Fri</button>
             </div>
+          </div>
+          <div class="timeline" id="timeline-container"></div>
         </div>
 
-        <div>
-          <div class="rc-title">Tasks <span>this week</span></div>
-          <div id="tasks-container"></div>
-        </div>
-
-        <div>
-          <div class="rc-title">Wellness <span>today</span></div>
-          <div class="well-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <span class="well-label" style="width:50px;">Sleep</span>
-            <div class="well-bar" style="flex:1; background:#1a1a1a; height:6px; border-radius:3px; margin:0 10px;"><div class="well-fill" style="width:72%; background:#EF9F27; height:100%; border-radius:3px;"></div></div>
-            <span class="well-val" style="font-size:12px;">6.5h</span>
+        <div class="right-col">
+          <div>
+            <div class="rc-title">Mood check-in <span>today</span></div>
+            <div class="mood-chips">
+              <span class="mood-chip">Great</span>
+              <span class="mood-chip">Good</span>
+              <span class="mood-chip">Okay</span>
+              <span class="mood-chip">Tired</span>
+            </div>
           </div>
 
-          <div class="well-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <span class="well-label" style="width:50px;">Water</span>
-            <button onclick="updateMetric('water', -0.25)" style="background:#222; border:0; color:#fff; padding:2px 8px; border-radius:4px; cursor:pointer; font-weight:bold;">-</button>
-            <div class="well-bar" style="flex:1; background:#1a1a1a; height:6px; border-radius:3px; margin:0 10px;"><div class="well-fill" style="width:0%; background:#1D9E75; height:100%; border-radius:3px;"></div></div>
-            <button onclick="updateMetric('water', 0.25)" style="background:#222; border:0; color:#fff; padding:2px 8px; border-radius:4px; cursor:pointer; font-weight:bold;">+</button>
-            <span class="well-val" style="font-size:12px; width:45px; text-align:right;">0.00L</span>
+          <div>
+            <div class="rc-title">Tasks <span>this week</span></div>
+            <div id="tasks-container"></div>
           </div>
 
-          <div class="well-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <span class="well-label" style="width:50px;">Meals</span>
-            <button onclick="updateMetric('meals', -1)" style="background:#222; border:0; color:#fff; padding:2px 8px; border-radius:4px; cursor:pointer; font-weight:bold;">-</button>
-            <div class="well-bar" style="flex:1; background:#1a1a1a; height:6px; border-radius:3px; margin:0 10px;"><div class="well-fill" style="width:0%; background:#7F77DD; height:100%; border-radius:3px;"></div></div>
-            <button onclick="updateMetric('meals', 1)" style="background:#222; border:0; color:#fff; padding:2px 8px; border-radius:4px; cursor:pointer; font-weight:bold;">+</button>
-            <span class="well-val" style="font-size:12px; width:45px; text-align:right;">0/3</span>
+          <div>
+            <div class="rc-title">Wellness <span>today</span></div>
+            <div class="well-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <span class="well-label" style="width:50px;">Sleep</span>
+              <div class="well-bar" style="flex:1; background:var(--bg-2); height:6px; border-radius:3px; margin:0 10px;"><div class="well-fill" style="width:72%; background:var(--amber-400); height:100%; border-radius:3px;"></div></div>
+              <span class="well-val" style="font-size:12px;">6.5h</span>
+            </div>
+
+            <div class="well-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <span class="well-label" style="width:50px;">Water</span>
+              <button onclick="updateMetric('water', -0.25)" style="background:var(--bg-2); border:0.5px solid var(--border); color:var(--text-1); padding:2px 8px; border-radius:4px; cursor:pointer; font-weight:bold;">-</button>
+              <div class="well-bar" style="flex:1; background:var(--bg-2); height:6px; border-radius:3px; margin:0 10px;"><div class="well-fill" style="width:0%; background:var(--teal-400); height:100%; border-radius:3px;"></div></div>
+              <button onclick="updateMetric('water', 0.25)" style="background:var(--bg-2); border:0.5px solid var(--border); color:var(--text-1); padding:2px 8px; border-radius:4px; cursor:pointer; font-weight:bold;">+</button>
+              <span class="well-val" style="font-size:12px; width:45px; text-align:right;">0.00L</span>
+            </div>
+
+            <div class="well-row" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <span class="well-label" style="width:50px;">Meals</span>
+              <button onclick="updateMetric('meals', -1)" style="background:var(--bg-2); border:0.5px solid var(--border); color:var(--text-1); padding:2px 8px; border-radius:4px; cursor:pointer; font-weight:bold;">-</button>
+              <div class="well-bar" style="flex:1; background:var(--bg-2); height:6px; border-radius:3px; margin:0 10px;"><div class="well-fill" style="width:0%; background:var(--purple-400); height:100%; border-radius:3px;"></div></div>
+              <button onclick="updateMetric('meals', 1)" style="background:var(--bg-2); border:0.5px solid var(--border); color:var(--text-1); padding:2px 8px; border-radius:4px; cursor:pointer; font-weight:bold;">+</button>
+              <span class="well-val" style="font-size:12px; width:45px; text-align:right;">0/3</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div id="page-tasks" class="page-view" style="display: none; padding: 20px;">
-    <h2 style="font-size: 18px; margin-bottom: 10px;">All Tasks Management</h2>
-    <p style="font-size: 13px; color: var(--text-2); margin-bottom: 20px;">Add, edit, and complete your active university tasks directly from the database.</p>
-    <div style="border: 1px dashed var(--border); padding: 30px; text-align: center; border-radius: var(--r-md); color: var(--text-3); font-size: 13px;">
-       Task Management Module Integration Screen
+    <div id="page-schedule" class="page-view" style="display: none; padding: 20px;">
+      <h2 style="font-size: 18px; margin-bottom: 10px;">Academic Calendar & Lectures</h2>
+      <p style="font-size: 13px; color: var(--text-2); margin-bottom: 20px;">Review time logs and block allocations scheduled across your active modules.</p>
+      <div style="border: 1px dashed var(--border); padding: 30px; text-align: center; border-radius: var(--r-md); color: var(--text-3); font-size: 13px;">
+         Core Schedule Calendar View Integration Frame
+      </div>
     </div>
-  </div>
 
-  <div id="page-mood" class="page-view" style="display: none; padding: 20px;">
-    <h2 style="font-size: 18px; margin-bottom: 10px;">Wellbeing Analytics</h2>
-    <p style="font-size: 13px; color: var(--text-2); margin-bottom: 20px;">Monitor your mental performance, diet tracking, and hydration consistency analytics.</p>
-    <div style="border: 1px dashed var(--border); padding: 30px; text-align: center; border-radius: var(--r-md); color: var(--text-3); font-size: 13px;">
-       Wellbeing Trends & Charts Screen
+    <div id="page-tasks" class="page-view" style="display: none; padding: 20px;">
+      <h2 style="font-size: 18px; margin-bottom: 10px;">All Tasks Management</h2>
+      <p style="font-size: 13px; color: var(--text-2); margin-bottom: 20px;">Add, edit, and complete your active university tasks directly from the database.</p>
+      <div style="border: 1px dashed var(--border); padding: 30px; text-align: center; border-radius: var(--r-md); color: var(--text-3); font-size: 13px;">
+         Task Management Module Integration Screen
+      </div>
     </div>
-  </div>
-</main>
+
+    <div id="page-mood" class="page-view" style="display: none; padding: 20px;">
+      <h2 style="font-size: 18px; margin-bottom: 10px;">Wellbeing Analytics</h2>
+      <p style="font-size: 13px; color: var(--text-2); margin-bottom: 20px;">Monitor your mental performance, diet tracking, and hydration consistency analytics.</p>
+      <div style="border: 1px dashed var(--border); padding: 30px; text-align: center; border-radius: var(--r-md); color: var(--text-3); font-size: 13px;">
+         Wellbeing Trends & Charts Screen
+      </div>
+    </div>
+  </main>
 </div>
 
 <script>
@@ -489,7 +452,6 @@ function loadDashboardFromDatabase() {
         return;
       }
 
-      // Map incoming database values safely into application memory state
       appData.userInfo = data.userInfo || { full_name: "User Account", major: "CompSci", year: "2" };
       appData.currentMood = data.currentMood || "Okay";
       appData.wellnessScore = data.wellnessScore !== undefined ? parseInt(data.wellnessScore) : 0;
@@ -503,16 +465,16 @@ function loadDashboardFromDatabase() {
       document.querySelector('.nav-name').innerText = appData.userInfo.full_name;
       document.querySelector('.nav-sub').innerText = `Year ${appData.userInfo.year} · ${appData.userInfo.major}`;
       
-      // Sync Sidebar Task Notification Badge
+      // Sync Sidebar Task Notification Badge (FIX: Explicit query string targeting)
       const pendingCount = appData.tasks.filter(t => t.status === "pending").length;
-      const sidebarBadge = document.querySelector('.nav-item [class*="badge"], .nav-badge.red');
+      const sidebarBadge = document.querySelector('.nav-badge.red');
       if (sidebarBadge) sidebarBadge.innerText = pendingCount;
 
       // Sync Mood Chip Highlight Positions
-      document.querySelectorAll('.mood-chip').forEach(c => c.classList.remove('sel', 'active'));
       document.querySelectorAll('.mood-chip').forEach(chip => {
+        chip.classList.remove('sel');
         if (chip.innerText.trim() === appData.currentMood) {
-          chip.classList.add('sel'); // Adapts to your CSS naming conventions
+          chip.classList.add('sel');
         }
       });
 
@@ -536,19 +498,20 @@ function renderTimeline() {
   if (!container) return;
   
   if (Object.keys(appData.schedule).length === 0) {
-    container.innerHTML = `<div style="font-size:12px; color:#666; padding:20px; text-align:center;">No events logged today.</div>`;
+    container.innerHTML = `<div style="font-size:12px; color:var(--text-2); padding:20px; text-align:center;">No events logged today.</div>`;
     return;
   }
 
   container.innerHTML = Object.keys(appData.schedule).map(hour => {
     const slot = appData.schedule[hour];
+    // FIX: Swapped hardcoded light/dark clashing colors for CSS system theme variable tokens
     return `
       <div class="tl-hour" style="position:relative; margin-bottom:15px;">
-        <span class="tl-time" style="width:50px; display:inline-block; font-size:12px; color:#666;">${hour}</span>
+        <span class="tl-time" style="width:50px; display:inline-block; font-size:12px; color:var(--text-2);">${hour}</span>
         <div class="tl-slot" style="display:inline-block; width:calc(100% - 60px); vertical-align:top;">
-          <div class="tl-block ${slot.type || 'free'}" style="padding:12px; border-radius:8px; background:${slot.type === 'class' ? '#1f1b40' : '#141414'}; border-left:4px solid ${slot.type === 'class' ? '#7F77DD' : '#333'};">
-            <div class="tl-block-name" style="font-weight:600; font-size:13px; color:${slot.type === 'class' ? '#9d95ff' : '#fff'};">${slot.name}</div>
-            ${slot.sub ? `<div class="tl-block-sub" style="font-size:11px; color:#888; margin-top:2px;">${slot.sub}</div>` : ""}
+          <div class="tl-block ${slot.type || 'free'}" style="padding:12px; border-radius:8px;">
+            <div class="tl-block-name" style="font-weight:600; font-size:13px;">${slot.name}</div>
+            ${slot.sub ? `<div class="tl-block-sub" style="font-size:11px; margin-top:2px;">${slot.sub}</div>` : ""}
           </div>
         </div>
       </div>`;
@@ -560,23 +523,23 @@ function renderTasks() {
   if (!container) return;
   
   if (appData.tasks.length === 0) {
-    container.innerHTML = `<div style="font-size:12px; color:#666; padding:10px 0;">All caught up!</div>`;
+    container.innerHTML = `<div style="font-size:12px; color:var(--text-3); padding:10px 0;">All caught up!</div>`;
     return;
   }
 
   container.innerHTML = appData.tasks.map(task => {
     const isDone = task.status === "done";
-    let tagStyle = "background:#2c1e15; color:#EF9F27;"; // Default Amber
-    if (isDone) tagStyle = "background:#122b20; color:#1D9E75;";
-    else if (task.tag && (task.tag.includes("Urgent") || task.tag.includes("days"))) tagStyle = "background:#2d1919; color:#ff5c5c;";
+    let tagClass = "amber";
+    if (isDone) tagClass = "green";
+    else if (task.tag && (task.tag.includes("Urgent") || task.tag.includes("days"))) tagClass = "red";
 
     return `
-      <div class="task-row" data-id="${task.id}" style="display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid #1f1f1f;">
+      <div class="task-row" data-id="${task.id}" style="display:flex; align-items:center; justify-content:space-between; padding:10px 0;">
         <div style="display:flex; align-items:center; gap:10px; flex:1;">
-          <input type="checkbox" ${isDone ? 'checked' : ''} onchange="toggleTaskStatus(${task.id}, this.checked)" style="accent-color:#534AB7; cursor:pointer; width:16px; height:16px;">
-          <span class="tname" style="font-size:13px; color:${isDone ? '#555' : '#fff'}; text-decoration:${isDone ? 'line-through' : 'none'};">${task.name}</span>
+          <input type="checkbox" ${isDone ? 'checked' : ''} onchange="toggleTaskStatus(${task.id}, this.checked)" style="accent-color:var(--purple-600); cursor:pointer; width:16px; height:16px;">
+          <span class="tname" style="font-size:13px; color:${isDone ? 'var(--text-3)' : 'var(--text-1)'}; text-decoration:${isDone ? 'line-through' : 'none'};">${task.name}</span>
         </div>
-        <span class="ttag" style="font-size:11px; padding:3px 8px; border-radius:12px; ${tagStyle}">${task.tag || 'Active'}</span>
+        <span class="ttag ${tagClass}" style="font-size:11px; padding:3px 8px; border-radius:12px;">${task.tag || 'Active'}</span>
       </div>`;
   }).join('');
 }
@@ -605,13 +568,11 @@ function renderStats() {
 }
 
 function renderWellnessMetrics() {
-  // 1. Render Hydration Text & Progress Width Indicators
   const waterValEl = document.querySelector('.well-row:nth-of-type(2) .well-val');
   const waterBarEl = document.querySelector('.well-row:nth-of-type(2) .well-fill');
   if (waterValEl) waterValEl.innerText = `${appData.waterAmount.toFixed(2)}L`;
   if (waterBarEl) waterBarEl.style.width = `${Math.min((appData.waterAmount / 3.0) * 100, 100)}%`;
 
-  // 2. Render Nutritional Dietary Text & Progress Width Indicators
   const mealValEl = document.querySelector('.well-row:nth-of-type(3) .well-val');
   const mealBarEl = document.querySelector('.well-row:nth-of-type(3) .well-fill');
   if (mealValEl) mealValEl.innerText = `${appData.mealsEaten}/${appData.totalMeals}`;
@@ -631,6 +592,13 @@ function updateMetric(type, value) {
   .then(() => loadDashboardFromDatabase());
 }
 
+// FIX: Event execution target binder moved down post interactive array initialization
+function attachMoodListeners() {
+  document.querySelectorAll('.mood-chip').forEach(chip => {
+    chip.onclick = () => updateMetric('mood', chip.innerText.trim());
+  });
+}
+
 function toggleTaskStatus(taskId, isChecked) {
   fetch('loginRelated/save_wellness.php', {
     method: 'POST',
@@ -640,32 +608,28 @@ function toggleTaskStatus(taskId, isChecked) {
   .then(() => loadDashboardFromDatabase());
 }
 
-// Attach event listeners seamlessly to your static HTML layout elements
-document.querySelectorAll('.mood-chip').forEach(chip => {
-  chip.onclick = () => updateMetric('mood', chip.innerText.trim());
-});
-
 // ==========================================
 // SIDEBAR NAVIGATION SCREEN MANAGER
 // ==========================================
 document.querySelectorAll('.nav-item').forEach(btn => {
   btn.onclick = () => {
     const targetId = btn.getAttribute('data-target');
-    if (!targetId) return; // Skip buttons without targets
+    if (!targetId || !document.getElementById(targetId)) return;
 
-    // 1. Swap active visual highlight classes on the buttons
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     btn.classList.add('active');
 
-    // 2. Hide all pages, then show the matching targeted container
     document.querySelectorAll('.page-view').forEach(page => page.style.display = 'none');
     document.getElementById(targetId).style.display = 'block';
   };
 });
 
-// Fire runtime script loop
+// Run Initializations
+attachMoodListeners();
 loadDashboardFromDatabase();
 </script>
 
 </body>
 </html>
+
+```
