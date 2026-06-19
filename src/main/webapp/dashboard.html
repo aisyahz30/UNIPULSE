@@ -43,26 +43,26 @@
     --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
   }
 
-  @media (prefers-color-scheme: dark) {
+  @media (prefers-color-scheme: light) {
     :root {
-      --bg-app: #0f172a;
-      --bg-card: #1e293b;
-      --bg-accent: #334155;
-      --text-primary: #f8fafc;
-      --text-secondary: #94a3b8;
+      --bg-app: #fdfdfd;
+      --bg-card: #ffffff;
+      --bg-accent: #f0f4f8;
+      --text-primary: #1e293b;
+      --text-secondary: #475569;
       --text-muted: #64748b;
-      --border-color: #334155;
+      --border-color: #e2e8f0;
       
-      --purple-light: #2e1065;
-      --purple-main: #a78bfa;
-      --blue-light: #172554;
-      --blue-main: #60a5fa;
-      --teal-light: #052e16;
-      --teal-main: #4ade80;
-      --amber-light: #451a03;
-      --amber-main: #fbbf24;
-      --red-light: #450a0a;
-      --red-main: #f87171;
+      --purple-light: #ede9fe;
+      --purple-main: #c4b5fd;
+      --blue-light: #e0f2fe;
+      --blue-main: #93c5fd;
+      --teal-light: #d1fae5;
+      --teal-main: #6ee7b7;
+      --amber-light: #fef3c7;
+      --amber-main: #fcd34d;
+      --red-light: #fee2e2;
+      --red-main: #fca5a5;
     }
   }
 
@@ -285,6 +285,36 @@
   .mood-chip:hover, .mood-chip.sel {
     background: var(--purple-light); border-color: var(--purple-main); color: var(--purple-main);
   }
+  /* Visual chips (Daily Mood Check-In) */
+  .mood-chips-visual {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+  }
+  .mood-chip-visual {
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  }
+  .mood-chip-visual:hover {
+  background: var(--blue-light);
+  border-color: var(--blue-main);
+  transform: scale(1.05);
+  cursor: pointer;
+  } 
+  .mood-chip-visual.sel {
+  background: var(--purple-light);
+  border-color: var(--purple-main);
+  color: var(--purple-main);
+  }
+
 
   /* Task Elements */
   .task-row {
@@ -512,34 +542,47 @@
         Update your current mood and wellbeing status.
     </p>
     <div class="widget-section">
-    <div class="mood-chips">
-      <span class="mood-chip">
-        <img src="images\happy.jpg" width="80">
+    <div class="mood-chips-visual">
+      <span class="mood-chip-visual">
+        <img src="images\happy.jpg" width="160">
         <br>Happy
       </span>
-      <span class="mood-chip">
-        <img src="images\sad.jpg" width="80">
+      <span class="mood-chip-visual">
+        <img src="images\sad.jpg" width="160">
         <br>Sad
       </span>
-      <span class="mood-chip">
-        <img src="images\tired.jpg" width="80">
+      <span class="mood-chip-visual">
+        <img src="images\tired.jpg" width="160">
         <br>Tired
       </span>
-      <span class="mood-chip">
-        <img src="images\confident.jpg" width="80">
+      <span class="mood-chip-visual">
+        <img src="images\confident.jpg" width="160">
         <br>Confident
       </span>
-      <span class="mood-chip">
-        <img src="images\angry.jpg" width="80">
+      <span class="mood-chip-visual">
+        <img src="images\angry.jpg" width="160">
         <br>Angry
       </span>
-      <span class="mood-chip">
-        <img src="images\nervous.jpg" width="80">
+      <span class="mood-chip-visual">
+        <img src="images\nervous.jpg" width="160">
         <br>Nervous
       </span>
-</div>
+    </div>
     </div>
 </div>
+<!-- script untuk klik -->
+<script>
+  document.querySelectorAll('.mood-chip-visual').forEach(chip => {
+    chip.addEventListener('click', () => {
+      // buang highlight dari semua chip
+      document.querySelectorAll('.mood-chip-visual').forEach(c => c.classList.remove('sel'));
+      // tambah highlight pada chip yang dipilih
+      chip.classList.add('sel');
+      // update teks nasihat
+      document.getElementById('srs-cbt-text').innerText = "You selected: " + chip.innerText;
+    });
+  });
+</script>
     
   </main>
 </div>
